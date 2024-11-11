@@ -1,9 +1,11 @@
 """Tests for the web app"""
 
 import sys
+import os
 from unittest.mock import patch, MagicMock
 import pytest
-sys.path.append('../web-app')
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from app import create_app
 
 @pytest.fixture
