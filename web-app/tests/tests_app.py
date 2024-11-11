@@ -1,6 +1,7 @@
-import pytest
-from app import *
+"""Tests for the web app."""
 from unittest.mock import patch, MagicMock
+import pytest
+from app import create_app
 
 # configure test client to simulate requests to flask app
 @pytest.fixture
@@ -31,9 +32,9 @@ def test_play_game(client):
 def test_store_game_result(client):
     with patch("app.db.collection.insert_one") as mock_insert:
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
-        
+
         response = client.post("/store-result", json={"choice": "rock", "result": "win"})
         assert response.status_code == 200
-        
+
         # check that insert_one was called with expected data
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
