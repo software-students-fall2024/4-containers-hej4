@@ -1,5 +1,4 @@
 import pytest
-from flask import Flask
 from app import *
 from unittest.mock import patch, MagicMock
 
