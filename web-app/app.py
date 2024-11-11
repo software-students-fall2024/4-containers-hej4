@@ -1,5 +1,5 @@
 """Web app module for rock-paper-scissors game"""
-from flask import Flask
+from flask import Flask, request, jsonify
 from pymongo import MongoClient
 
 def create_app(test_config=None):
@@ -20,6 +20,26 @@ def create_app(test_config=None):
     @app.route("/")
     def index():
         return "Welcome to Rock-Paper-Scissors"
+
+    @app.route("/play", methods=["POST"])
+    def play():
+        user_choice = request.json.get("choice")
+        result = "win"  # replace with actual logic, just using this for testing
+        return jsonify({"result": result})
+
+    @app.route("/store-result", methods=["POST"])
+    def store_result():
+        data = request.json
+        choice = data.get("choice")
+        result = data.get("result")
+
+        # Insert into MongoDB collection
+        if choice and result:
+            app.db.collection.insert_one({"choice": choice, "result": result})
+            return jsonify({"status": "success"}), 200
+        else:
+            return jsonify({"error": "Invalid data"}), 400
+
 
     return app
 
