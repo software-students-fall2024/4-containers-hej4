@@ -30,6 +30,13 @@ jobs:
         run: |
           cd ${{ matrix.subdir }}
           pipenv run pylint **/*.py
+      - name: Run tests with pytest
+        if: ${{ hashFiles(format('{0}/**/*.py', matrix.subdir)) != '' }}
+        env:
+          PYTHONPATH: ${{ matrix.subdir }}
+        run: |
+          cd ${{ matrix.subdir }}
+          pipenv run pytest
       - name: Format with black
         if: ${{ hashFiles(format('{0}/**/*.py', matrix.subdir)) != '' }}
         # you may set black to ignore any files or dependencies that make no sense to format
