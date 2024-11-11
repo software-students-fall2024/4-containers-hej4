@@ -39,7 +39,7 @@ def test_store_game_result(client):
         mock_collection = mock_db.collection
         mock_insert = mock_collection.insert_one
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
-        
+
         response = client.post("/store-result", json={"choice": "rock", "result": "win"})
         assert response.status_code == 200
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
