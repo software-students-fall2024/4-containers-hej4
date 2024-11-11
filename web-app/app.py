@@ -1,4 +1,6 @@
-from flask import Flask, jsonify
+"""Web app module for rock-paper-scissors game."""
+
+from flask import Flask
 from pymongo import MongoClient
 
 app = Flask(__name__)
