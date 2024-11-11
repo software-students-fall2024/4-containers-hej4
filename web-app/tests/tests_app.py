@@ -1,12 +1,11 @@
 """Tests for the web app"""
+# pylint: disable=redefined-outer-name
 import sys
 import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from unittest.mock import patch, MagicMock
 import pytest
 from app import create_app
-
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 @pytest.fixture
 def client():
@@ -43,4 +42,3 @@ def test_store_game_result(client):
         response = client.post("/store-result", json={"choice": "rock", "result": "win"})
         assert response.status_code == 200
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
-        
