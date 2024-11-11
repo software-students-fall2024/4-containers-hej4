@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block container %}
+<section>
+    <section class="game-container">
+        <section class="game">
+            <h2>Player: 0</h2>
+            <div class="choice">
+                <video id="camera" autoplay playsinline></video>
+                <p></p>
+            </div>
+            <!-- populate with choice for each round -->
+            <p>✊✋✌️</p>
+        </section>
+        <section class="game">
+            <h2>Computer: 0</h2>
+            <div class="choice">
+                <p id="comp-choice">✊</p>
+            </div>
+            <!-- populate with choice for each round -->
+            <p>✊✋✌️</p>
+        </section>
+    </section>
+</section>
+<script>
+    async function startCamera(){
+        const constraints = {
+            audio: false,
+            video: { width: 400, height: 400 },
+        };
+        try {
+            let stream = await navigator.mediaDevices.getUserMedia(constraints);
+            video = document.getElementById("camera");
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                video.play();
+            };
+        }
+        catch (err) {
+            console.error("Error accessing camera:", err);
+        }
+    }
+    window.addEventListener('load', startCamera);
+</script>
+{% endblock %}
