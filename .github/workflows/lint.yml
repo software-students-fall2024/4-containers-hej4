@@ -36,3 +36,13 @@ jobs:
         run: |
           cd ${{ matrix.subdir }}
           pipenv run black --diff --check .
+      - name: List directory contents for debugging
+        run: |
+          echo "Root directory:"
+          ls -alh
+          echo "Contents of web-app:"
+          ls -alh web-app
+      - name: Print PYTHONPATH for debugging
+        run: echo "PYTHONPATH is set to $PYTHONPATH"
+        env:
+          PYTHONPATH: ${{ github.workspace }}/web-app
