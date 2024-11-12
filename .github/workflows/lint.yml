@@ -29,7 +29,7 @@ jobs:
           PYTHONPATH: ./web-app
         run: |
           cd ${{ matrix.subdir }}
-          pipenv run pylint --rcfile=../../.pylintrc **/*.py
+          pipenv run pylint --rcfile=../.pylintrc **/*.py
       - name: Format with black
         if: ${{ hashFiles(format('{0}/**/*.py', matrix.subdir)) != '' }}
         # you may set black to ignore any files or dependencies that make no sense to format
