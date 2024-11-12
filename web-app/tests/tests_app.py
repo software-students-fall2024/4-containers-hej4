@@ -49,6 +49,5 @@ def test_store_game_result(client):
 
 def test_play_route_invalid_method(client):
     """/play should only accept POST requests, not GET"""
-    response = client.get("/play")  
-    assert response.status_code == 405  
-
+    response = client.get("/play")
+    assert response.status_code == 405
