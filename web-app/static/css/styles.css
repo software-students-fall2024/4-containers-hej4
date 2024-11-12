@@ -42,15 +42,25 @@ body {
     height: 400px;
     overflow: hidden;
 
-    #comp-choice {
-        margin: auto;
-        line-height: 400px;
-        font-size: 160px;
-        text-align: center;
-    }
+}
+
+#comp-choice {
+    margin: auto;
+    line-height: 400px;
+    font-size: 160px;
+    text-align: center;
+}
+
+#btn {
+    font-size: 20px;
+    padding: 12px 24px;
 }
 
 video {
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+}
+
+canvas {
+    display: none;
 }

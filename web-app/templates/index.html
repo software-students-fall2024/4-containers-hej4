@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block container %}
 <section>
     <section class="game-container">
@@ -6,8 +6,9 @@
             <h2>Player: 0</h2>
             <div class="choice">
                 <video id="camera" autoplay playsinline></video>
-                <p></p>
+                <canvas id="canvas"></canvas>
             </div>
+            <button id="btn">GO!</button>
             <!-- populate with choice for each round -->
             <p>✊✋✌️</p>
         </section>
@@ -22,6 +23,10 @@
     </section>
 </section>
 <script>
+    const video = document.querySelector("#camera");
+    const canvas = document.querySelector("#canvas");
+    const btn = document.querySelector("#btn");
+    
     async function startCamera(){
         const constraints = {
             audio: false,
@@ -29,7 +34,6 @@
         };
         try {
             let stream = await navigator.mediaDevices.getUserMedia(constraints);
-            video = document.getElementById("camera");
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
@@ -39,6 +43,29 @@
             console.error("Error accessing camera:", err);
         }
     }
-    window.addEventListener('load', startCamera);
+
+    function takePicture() {
+        const context = canvas.getContext("2d");
+        canvas.width = 400;
+        canvas.height = 400;
+        context.drawImage(video, 0, 0, 400, 400);
+
+        const imageData = canvas.toDataURL("image/png");
+        postImageData(imageData);
+    }
+
+    function postImageData(imageData){
+        fetch("http://127.0.0.1:5000/upload_image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ image: imageData }),
+        })
+    }
+
+    window.addEventListener("load", startCamera);
+    btn.addEventListener("click", (e)=>{e.preventDefault(); takePicture();})
+
 </script>
 {% endblock %}

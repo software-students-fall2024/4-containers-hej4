@@ -1,9 +1,10 @@
 """Web app module for rock-paper-scissors game."""
 
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import random
+from flask_cors import CORS, cross_origin
 
 client = MongoClient("mongodb://mongodb:27017/")
 db = client["rockPaperScissors"]
@@ -34,15 +35,28 @@ def get_winner(player, comp):
 
 def create_app():
     app = Flask(__name__)
-    
+    CORS(app, support_credentials=True)
+
     @app.route("/")
     def home():
         """
-        Route for home page
-        Returns:
-            rendered html template
+        Route for game
+        Returns rendered html template
         """
         return render_template("index.html")
+    
+    @app.route("/upload_image", methods=["POST"])
+    def upload_image():
+        """
+        Route for game
+        Uploads image to mongodb
+        """
+        data = request.get_json()
+        imageData = data["image"]
+        db.images.insert_one({"image": imageData})
+        print("inserted image: ", imageData)
+
+        return redirect(url_for("home"))
     
     return app
 
