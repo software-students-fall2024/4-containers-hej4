@@ -26,7 +26,7 @@ jobs:
         if: ${{ hashFiles(format('{0}/**/*.py', matrix.subdir)) != '' }}
         # you may set pylint to ignore any files or dependencies that make no sense to lint
         env:
-          PYTHONPATH: ${{ matrix.subdir }}  # Set PYTHONPATH to ensure correct imports
+          PYTHONPATH: ./web-app
         run: |
           cd ${{ matrix.subdir }}
           pipenv run pylint **/*.py
