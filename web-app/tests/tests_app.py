@@ -46,3 +46,9 @@ def test_store_game_result(client):
         )
         assert response.status_code == 200
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
+
+def test_play_route(client):
+    response=client.get("/play")
+    #/play should only accept post request not get 
+    assert response.status_code==405
+
