@@ -1,12 +1,10 @@
 """Tests for the web app"""
-# pylint: disable=C0413
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-# pylint: enable=C0413
+from app import create_app
 import sys
 import os
 from unittest.mock import patch, MagicMock
 import pytest
-from app import create_app
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 @pytest.fixture
 def client():

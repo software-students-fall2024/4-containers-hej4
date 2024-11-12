@@ -1,0 +1,6 @@
+[MESSAGES CONTROL]
+disable=
+    C0413
+
+[MASTER]
+ignore-patterns=.*_test\.py
