@@ -5,7 +5,9 @@ import os
 from unittest.mock import patch, MagicMock
 import pytest
 from app import create_app
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+
 
 @pytest.fixture
 def client():
@@ -34,11 +36,13 @@ def test_play_game(client):  # pylint: disable=redefined-outer-name
 
 def test_store_game_result(client):
     """Test storing game results in the database."""
-    with patch.object(client.application, 'db') as mock_db:
+    with patch.object(client.application, "db") as mock_db:
         mock_collection = mock_db.collection
         mock_insert = mock_collection.insert_one
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
 
-        response = client.post("/store-result", json={"choice": "rock", "result": "win"})
+        response = client.post(
+            "/store-result", json={"choice": "rock", "result": "win"}
+        )
         assert response.status_code == 200
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})

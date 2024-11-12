@@ -2,10 +2,11 @@
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 
+
 def create_app(test_config=None):
     """Create and configure app"""
     app = Flask(__name__)
-    
+
     # database connection
     if test_config:
         # use different database/configuration for testing
@@ -16,7 +17,7 @@ def create_app(test_config=None):
         client = MongoClient("mongodb://mongodb:27017/")
 
     app.db = client["rockPaperScissors"]
-    
+
     @app.route("/")
     def index():
         return "Welcome to Rock-Paper-Scissors"
@@ -40,8 +41,8 @@ def create_app(test_config=None):
         else:
             return jsonify({"error": "Invalid data"}), 400
 
-
     return app
+
 
 if __name__ == "__main__":
     app = create_app()
