@@ -71,11 +71,10 @@ def test_upload_image(client):
         mock_insert = mock_images_collection.insert_one
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
 
-        response = client.post(
-            "/upload_image", json={"image": "mock_image_data"}
-        )
+        response = client.post("/upload_image", json={"image": "mock_image_data"})
         assert response.status_code == 302  # Redirect to home
         mock_insert.assert_called_once_with({"image": "mock_image_data"})
+
 
 def test_random_rps():
     """Test random_rps helper function"""
@@ -83,6 +82,7 @@ def test_random_rps():
     for i in range(10):
         choice = random_rps()
         assert choice in outcomes
+
 
 def test_get_winner():
     """Test get_winner function with all possible rps combinations"""
@@ -94,6 +94,7 @@ def test_get_winner():
     assert get_winner("scissors", "paper") == "player"
     assert get_winner("scissors", "rock") == "comp"
     assert get_winner("rock", "invalid") is None
+
 
 def test_get_winner_invalid_input():
     """Test get_winner with invalid inputs"""
