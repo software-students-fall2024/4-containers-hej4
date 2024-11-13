@@ -5,6 +5,7 @@ import random
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 
+# todo: write tests for these
 
 def create_app(test_config=None):
     """Create and configure app"""
@@ -20,6 +21,9 @@ def create_app(test_config=None):
         client = MongoClient("mongodb://mongodb:27017/")
 
     app.db = client["rockPaperScissors"]
+
+    #CORS(app, support_credentials=True)
+    #CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
     @app.route("/")
     def home():
@@ -48,7 +52,17 @@ def create_app(test_config=None):
         print(user_choice)
         result = "win"  # replace with actual logic, just using this for testing
         return jsonify({"result": result})
+    
 
+    @app.route("/view_images")
+    def view_images():
+        """
+        Route to view uploaded images
+        Returns a list of all image data in JSON format
+        """
+        images = list(app.db.images.find({}, {"_id": 0, "image": 1}))  # Exclude _id for simplicity
+        return {"images": images}
+    
     @app.route("/store-result", methods=["POST"])
     def store_result():
         data = request.json
@@ -60,7 +74,7 @@ def create_app(test_config=None):
             app.db.collection.insert_one({"choice": choice, "result": result})
             return jsonify({"status": "success"}), 200
         return jsonify({"error": "Invalid data"}), 400
-
+    
     return app
 
 
@@ -84,6 +98,8 @@ def get_winner(player, comp):
 
 
 if __name__ == "__main__":
-    FLASK_PORT = os.getenv("FLASK_PORT", "5000")
+    FLASK_PORT = os.getenv("FLASK_PORT", "5001")
     flask_app = create_app()
-    flask_app.run(host="0.0.0.0", port=5000, debug=True)
+    flask_app.run(host="0.0.0.0", port=5001, debug=True)
+    #added host
+    #app.run(host="0.0.0.0", port=FLASK_PORT)
