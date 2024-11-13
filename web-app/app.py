@@ -42,8 +42,7 @@ def create_app(test_config=None):
         """
         data = request.get_json()
         image_data = data["image"]
-        app.db.images.insert_one({"image": image_data})
-        print("inserted image: ", image_data)
+        app.db.images.insert_one({"image": image_data, "processed": False})
 
         return redirect(url_for("home"))
 
