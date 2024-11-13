@@ -1,4 +1,5 @@
 """Tests for the web app"""
+
 # pylint: disable=redefined-outer-name
 import sys
 import os
