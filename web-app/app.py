@@ -72,6 +72,9 @@ def random_rps():
 
 def get_winner(player, comp):
     """returns game winner based on player and computer choices"""
+    valid_choices = {"rock", "paper", "scissors"}
+    if player not in valid_choices or comp not in valid_choices:
+        return None  # Handle invalid input
     outcomes = {
         "rock": {"scissors": "player", "paper": "comp"},
         "paper": {"rock": "player", "scissors": "comp"},
