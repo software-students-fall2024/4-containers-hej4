@@ -1,41 +1,33 @@
 """Web app module for rock-paper-scissors game."""
 
 import os
+import random
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
-import random
-from flask_cors import CORS, cross_origin
 
 client = MongoClient("mongodb://mongodb:27017/")
 db = client["rockPaperScissors"]
 
-# todo: write tests for these
+
 def random_rps():
+    """returns random option: rocker, paper, or scissors"""
     options = ["rock", "paper", "scissors"]
     return random.choice(options)
 
+
 def get_winner(player, comp):
-    if player == comp:
-        return "tie"
-    elif player == "rock":
-        if comp == "scissors":
-            return "player"
-        elif comp == "paper":
-            return "comp"
-    elif player == "paper":
-        if comp == "rock":
-            return "player"
-        elif comp == "scissors":
-            return "comp"
-    elif player == "scissors":
-        if comp == "paper":
-            return "player"
-        elif comp == "rock":
-            return "comp"
+    """returns game winner based on player and computer choices"""
+    outcomes = {
+        "rock": {"scissors": "player", "paper": "comp"},
+        "paper": {"rock": "player", "scissors": "comp"},
+        "scissors": {"paper": "player", "rock": "comp"},
+    }
+    return "tie" if player == comp else outcomes.get(player, {}).get(comp, None)
+
 
 def create_app():
+    """creates and sets up flask app and routes"""
     app = Flask(__name__)
-    CORS(app, support_credentials=True)
 
     @app.route("/")
     def home():
@@ -44,7 +36,7 @@ def create_app():
         Returns rendered html template
         """
         return render_template("index.html")
-    
+
     @app.route("/upload_image", methods=["POST"])
     def upload_image():
         """
@@ -52,15 +44,16 @@ def create_app():
         Uploads image to mongodb
         """
         data = request.get_json()
-        imageData = data["image"]
-        db.images.insert_one({"image": imageData})
-        print("inserted image: ", imageData)
+        image_data = data["image"]
+        db.images.insert_one({"image": image_data})
+        print("inserted image: ", image_data)
 
         return redirect(url_for("home"))
-    
+
     return app
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "5000")
-    app = create_app()
-    app.run(port=FLASK_PORT)
+    flask_app = create_app()
+    flask_app.run(port=FLASK_PORT)
