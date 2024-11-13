@@ -1,4 +1,4 @@
-"""Tests for the Rock-Paper-Scissors web app."""
+"""Test Cases for the Rock-Paper-Scissors web app."""
 
 import sys
 import os
