@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable=
+    C0413,  # Wrong import position
+    E0401,  # Import error
+    E0402   # Attempted relative import beyond top-level package
