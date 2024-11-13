@@ -4,7 +4,7 @@ import sys
 import os
 from unittest.mock import patch, MagicMock
 import pytest
-from app import create_app
+from app import create_app, random_rps, get_winner
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
@@ -53,3 +53,50 @@ def test_play_route_invalid_method(client):
     """/play should only accept POST requests, not GET"""
     response = client.get("/play")
     assert response.status_code == 405
+
+
+def test_store_result_invalid_data(client):
+    """Test store result route with invalid data"""
+    response = client.post("/store-result", json={})
+    assert response.status_code == 400
+    data = response.get_json()
+    assert "error" in data
+    assert data["error"] == "Invalid data"
+
+
+def test_upload_image(client):
+    """Test image upload functionality"""
+    with patch.object(client.application, "db") as mock_db:
+        mock_images_collection = mock_db.images
+        mock_insert = mock_images_collection.insert_one
+        mock_insert.return_value = MagicMock(inserted_id="fake_id")
+
+        response = client.post("/upload_image", json={"image": "mock_image_data"})
+        assert response.status_code == 302  # Redirect to home
+        mock_insert.assert_called_once_with({"image": "mock_image_data"})
+
+
+def test_random_rps():
+    """Test random_rps helper function"""
+    outcomes = {"rock", "paper", "scissors"}
+    for i in range(10):
+        choice = random_rps()
+        assert choice in outcomes
+
+
+def test_get_winner():
+    """Test get_winner function with all possible rps combinations"""
+    assert get_winner("rock", "rock") == "tie"
+    assert get_winner("rock", "scissors") == "player"
+    assert get_winner("rock", "paper") == "comp"
+    assert get_winner("paper", "rock") == "player"
+    assert get_winner("paper", "scissors") == "comp"
+    assert get_winner("scissors", "paper") == "player"
+    assert get_winner("scissors", "rock") == "comp"
+    assert get_winner("rock", "invalid") is None
+
+
+def test_get_winner_invalid_input():
+    """Test get_winner with invalid inputs"""
+    assert get_winner("invalid", "rock") is None
+    assert get_winner("invalid", "invalid") is None
