@@ -1,4 +1,5 @@
 """Tests for the Rock-Paper-Scissors web app."""
+
 import sys
 import os
 from unittest.mock import patch, MagicMock
