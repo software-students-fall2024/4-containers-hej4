@@ -76,6 +76,10 @@ def create_app(test_config=None):
             return jsonify({"status": "success"}), 200
         return jsonify({"error": "Invalid data"}), 400
 
+    @app.route("/results")
+    def results():
+        return render_template("result.html")
+
     return app
 
 
