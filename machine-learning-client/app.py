@@ -65,9 +65,9 @@ def main():
                         "$set": {
                             "processed": True,
                             "choice": player_choice,
-                            "processed_at": datetime.utcnow()  # Add timestamp
+                            "processed_at": datetime.utcnow(),  # Add timestamp
                         }
-                    }
+                    },
                 )
 
         # fetch image every second

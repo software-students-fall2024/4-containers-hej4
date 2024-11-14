@@ -63,7 +63,7 @@ def create_app(test_config=None):
             app.db.images.find({}, {"_id": 0, "image": 1})
         )  # Exclude _id for simplicity
         return {"images": images}
-    
+
     # for debugging
     @app.route("/get_result", methods=["GET"])
     def get_result():
