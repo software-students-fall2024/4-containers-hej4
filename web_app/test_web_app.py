@@ -1,4 +1,5 @@
 """Test Cases for the Rock-Paper-Scissors web app."""
+# pylint: disable=redefined-outer-name
 
 import sys
 import os
