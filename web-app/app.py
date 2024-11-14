@@ -75,6 +75,11 @@ def create_app(test_config=None):
             app.db.collection.insert_one({"choice": choice, "result": result})
             return jsonify({"status": "success"}), 200
         return jsonify({"error": "Invalid data"}), 400
+    
+    @app.route("/results")
+    def results():
+        return render_template("result.html")
+    
 
     return app
 
