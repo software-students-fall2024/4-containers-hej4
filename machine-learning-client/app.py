@@ -34,17 +34,17 @@ def get_player_rps(image_data):
 
     hands, img = detector.findHands(img)
     if not hands:
-        return "no hands detected"
+        return "no hands detected", hands, []
 
     fingers = detector.fingersUp(hands[0])
     if fingers == [0, 0, 0, 0, 0]:
-        return "rock"
+        return "rock", hands, fingers
     elif fingers == [1, 1, 1, 1, 1]:
-        return "paper"
+        return "paper", hands, fingers
     elif fingers == [0, 1, 1, 0, 0]:
-        return "scissors"
+        return "scissors", hands, fingers
 
-    return "invalid choice"
+    return "invalid choice", hands, fingers
 
 
 def main():
@@ -56,11 +56,18 @@ def main():
     while True:
         image_doc = fetch_image()
         if image_doc:
-            player_choice = get_player_rps(image_doc["image"])
+            player_choice, hands, fingers = get_player_rps(image_doc["image"])
             if player_choice:
                 db.images.update_one(
                     {"_id": image_doc["_id"]},
-                    {"$set": {"processed": True, "choice": player_choice}},
+                    {
+                        "$set": {
+                            "processed": True,
+                            "choice": player_choice,
+                            "hands": hands,
+                            "fingers": fingers,
+                        }
+                    },
                 )
 
         # fetch image every second
