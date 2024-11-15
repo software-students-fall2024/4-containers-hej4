@@ -3,31 +3,30 @@
 <section>
     <section class="game-container">
         <section class="game">
-            <h2>Player: 0</h2>
+            <h2>Player: <span id="player-choice">0</span></h2>
             <div class="choice">
                 <video id="camera" autoplay playsinline></video>
                 <canvas id="canvas"></canvas>
             </div>
             <button id="btn">GO!</button>
-            <!-- populate with choice for each round -->
             <p>✊✋✌️</p>
         </section>
         <section class="game">
-            <h2>Computer: 0</h2>
-            <div class="choice">
-                <p id="comp-choice">✊</p>
-            </div>
-            <!-- populate with choice for each round -->
+            <h2>Computer: <span id="comp-choice">✊</span></h2> <!-- Set default emoji here -->
             <p>✊✋✌️</p>
         </section>
+        <p id="result"></p> <!-- Display the game result here -->
     </section>
 </section>
 <script>
     const video = document.querySelector("#camera");
     const canvas = document.querySelector("#canvas");
     const btn = document.querySelector("#btn");
-    
-    async function startCamera(){
+    const compChoiceElement = document.querySelector("#comp-choice"); // Display the computer's emoji choice
+    const playerChoiceElement = document.querySelector("#player-choice"); // Display the player's choice
+    const resultElement = document.querySelector("#result"); // Display the game result
+
+    async function startCamera() {
         const constraints = {
             audio: false,
             video: { width: 400, height: 400 },
@@ -38,8 +37,7 @@
             video.onloadedmetadata = () => {
                 video.play();
             };
-        }
-        catch (err) {
+        } catch (err) {
             console.error("Error accessing camera:", err);
         }
     }
@@ -52,20 +50,75 @@
 
         const imageData = canvas.toDataURL("image/png");
         postImageData(imageData);
+        pollForResult();  // Start polling for the result
     }
 
-    function postImageData(imageData){
+    function postImageData(imageData) {
         fetch("http://127.0.0.1:5001/upload_image", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ image: imageData }),
-        })
+        });
+    }
+
+    function pollForResult() {
+        const intervalId = setInterval(async () => {
+            try {
+                const response = await fetch("http://127.0.0.1:5001/get_result");
+                const data = await response.json();
+
+                if (data.choice !== "pending") {
+                    // Update player's choice
+                    playerChoiceElement.textContent = data.choice;
+                    
+                    // Generate and display the computer's choice
+                    const compChoice = ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
+                    compChoiceElement.textContent = getEmojiForChoice(compChoice);
+                    
+                    // Determine the winner
+                    const winner = getWinner(data.choice, compChoice);
+                    resultElement.textContent = `Result: ${winner}`;
+                    
+                    // Stop polling
+                    clearInterval(intervalId);
+                }
+            } catch (err) {
+                console.error("Error polling for result:", err);
+            }
+        }, 1000); // Poll every second
+    }
+
+    function getEmojiForChoice(choice) {
+        switch(choice) {
+            case "rock":
+                return "✊";
+            case "paper":
+                return "✋";
+            case "scissors":
+                return "✌️";
+            default:
+                return "";
+        }
+    }
+
+    function getWinner(player, comp) {
+        if (player === comp) return "Tie";
+        if ((player === "rock" && comp === "scissors") ||
+            (player === "paper" && comp === "rock") ||
+            (player === "scissors" && comp === "paper")) {
+            return "Player Wins!";
+        }
+        return "Computer Wins!";
     }
 
     window.addEventListener("load", startCamera);
-    btn.addEventListener("click", (e)=>{e.preventDefault(); takePicture();})
 
+    // Prevent page reload on GO! button click
+    btn.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevents any default form submission or page reload
+        takePicture();
+    });
 </script>
 {% endblock %}

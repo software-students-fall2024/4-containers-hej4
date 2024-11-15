@@ -7,6 +7,7 @@ from pymongo import MongoClient
 import time
 import cv2
 from cvzone.HandTrackingModule import HandDetector
+from datetime import datetime
 import base64
 import numpy as np
 
@@ -60,7 +61,13 @@ def main():
             if player_choice:
                 db.images.update_one(
                     {"_id": image_doc["_id"]},
-                    {"$set": {"processed": True, "choice": player_choice}},
+                    {
+                        "$set": {
+                            "processed": True,
+                            "choice": player_choice,
+                            "processed_at": datetime.utcnow(),  # Add timestamp
+                        }
+                    },
                 )
 
         # fetch image every second
