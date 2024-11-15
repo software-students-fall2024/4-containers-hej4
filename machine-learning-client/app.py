@@ -7,6 +7,7 @@ from pymongo import MongoClient
 import time
 import cv2
 from cvzone.HandTrackingModule import HandDetector
+from datetime import datetime
 import base64
 import numpy as np
 
@@ -66,6 +67,7 @@ def main():
                             "choice": player_choice,
                             "hands": hands,
                             "fingers": fingers,
+                            "processed_at": datetime.utcnow(),  # Add timestamp
                         }
                     },
                 )
