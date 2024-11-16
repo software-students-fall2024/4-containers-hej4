@@ -30,7 +30,7 @@ jobs:
 
     - name: Run linting
       working-directory: ./machine-learning-client
-      run: pipenv run pylint src/main.py
+      run: pipenv run pylint app.py
 
     - name: Format code with Black
       working-directory: ./machine-learning-client
