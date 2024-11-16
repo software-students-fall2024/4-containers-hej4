@@ -10,6 +10,7 @@ pymongo = "*"
 cvzone = "*"
 mediapipe = "*"
 opencv-python = "*"
+pytest = "*"
 
 [dev-packages]
 

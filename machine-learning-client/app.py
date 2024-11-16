@@ -31,7 +31,7 @@ def get_player_rps(image_data):
     """
     image_data = base64.b64decode(image_data.split(",")[1])
     nparr = np.frombuffer(image_data, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # pylint: disable=no-member
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # pylint: disable=no-member
 
     hands, img = detector.findHands(img)
     if not hands:
