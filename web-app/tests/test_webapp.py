@@ -5,8 +5,10 @@ import sys
 import os
 from unittest.mock import patch, MagicMock
 import pytest
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from app import create_app, random_rps, get_winner
+
 
 @pytest.fixture
 def client():
@@ -16,12 +18,17 @@ def client():
     with app.test_client() as client:
         yield client
 
+
 def test_homepage(client):  # pylint: disable=redefined-outer-name
     """Test homepage route status and content"""
     response = client.get("/")
     assert response.status_code == 200
     assert b'<h2>Player: <span id="player-choice">0</span></h2>' in response.data
-    assert '<h2>Computer: <span id="comp-choice">✊</span></h2>'.encode('utf-8') in response.data
+    assert (
+        '<h2>Computer: <span id="comp-choice">✊</span></h2>'.encode("utf-8")
+        in response.data
+    )
+
 
 def test_play_game(client):  # pylint: disable=redefined-outer-name
     """Test play game route for expected outcomes with valid choice"""
@@ -30,6 +37,7 @@ def test_play_game(client):  # pylint: disable=redefined-outer-name
     data = response.get_json()
     assert "result" in data
     assert data["result"] in ["win", "lose", "draw"]
+
 
 def test_store_game_result(client):
     """Test storing game results in the database."""
@@ -43,6 +51,7 @@ def test_store_game_result(client):
         )
         assert response.status_code == 200
         mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
+
 
 def test_play_route_invalid_method(client):
     """/play should only accept POST requests, not GET"""
@@ -68,13 +77,15 @@ def test_upload_image(client):
 
         response = client.post("/upload_image", json={"image": "mock_image_data"})
         assert response.status_code == 302  # Redirect to home
-        mock_insert.assert_called_once_with({"image": "mock_image_data", "processed": False})
+        mock_insert.assert_called_once_with(
+            {"image": "mock_image_data", "processed": False}
+        )
 
 
 def test_random_rps():
     """Test random_rps helper function"""
     outcomes = {"rock", "paper", "scissors"}
-    for i in range(10):
+    for _ in range(10):
         choice = random_rps()
         assert choice in outcomes
 
