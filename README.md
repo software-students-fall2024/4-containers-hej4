@@ -1,6 +1,6 @@
 ![Lint-free](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/lint.yml/badge.svg)
-![ML Client Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/ml-client-build.yml/badge.svg)
-![Web App Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/web-app-build.yml/badge.svg)
+![ML Client Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/ml-client.yml/badge.svg)
+![Web App Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/web-app.yml/badge.svg)
 
 # Rock Paper Scissors
 
