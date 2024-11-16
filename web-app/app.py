@@ -5,6 +5,7 @@ import random
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 
+
 def create_app(test_config=None):
     """Create and configure app"""
     app = Flask(__name__)
@@ -53,9 +54,7 @@ def create_app(test_config=None):
         Route to view uploaded images
         Returns a list of all image data in JSON format
         """
-        images = list(
-            app.db.images.find({}, {"_id": 0, "image": 1})
-        )
+        images = list(app.db.images.find({}, {"_id": 0, "image": 1}))
         return {"images": images}
 
     @app.route("/get_result", methods=["GET"])
