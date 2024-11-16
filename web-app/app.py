@@ -5,8 +5,6 @@ import random
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 
-# todo: write tests for these
-
 
 def create_app(test_config=None):
     """Create and configure app"""
@@ -22,9 +20,6 @@ def create_app(test_config=None):
         client = MongoClient("mongodb://mongodb:27017/")
 
     app.db = client["rockPaperScissors"]
-
-    # CORS(app, support_credentials=True)
-    # CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
     @app.route("/")
     def home():
@@ -50,7 +45,7 @@ def create_app(test_config=None):
     def play():
         user_choice = request.json.get("choice")
         print(user_choice)
-        result = "win"  # replace with actual logic, just using this for testing
+        result = "win"
         return jsonify({"result": result})
 
     @app.route("/view_images")
@@ -59,12 +54,9 @@ def create_app(test_config=None):
         Route to view uploaded images
         Returns a list of all image data in JSON format
         """
-        images = list(
-            app.db.images.find({}, {"_id": 0, "image": 1})
-        )  # Exclude _id for simplicity
+        images = list(app.db.images.find({}, {"_id": 0, "image": 1}))
         return {"images": images}
 
-    # for debugging
     @app.route("/get_result", methods=["GET"])
     def get_result():
         image = app.db.images.find_one({"processed": True}, sort=[("processed_at", -1)])
@@ -97,7 +89,7 @@ def get_winner(player, comp):
     """returns game winner based on player and computer choices"""
     valid_choices = {"rock", "paper", "scissors"}
     if player not in valid_choices or comp not in valid_choices:
-        return None  # Handle invalid input
+        return None
     outcomes = {
         "rock": {"scissors": "player", "paper": "comp"},
         "paper": {"rock": "player", "scissors": "comp"},
@@ -110,5 +102,3 @@ if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "5001")
     flask_app = create_app()
     flask_app.run(host="0.0.0.0", port=5001, debug=True)
-    # added host
-    # app.run(host="0.0.0.0", port=FLASK_PORT)

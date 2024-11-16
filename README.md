@@ -1,26 +1,59 @@
 ![Lint-free](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/lint.yml/badge.svg)
-<!-- two [badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge) showing the result of the latest build/test workflow of both the machine learning client and web app subsystems. -->
+![ML Client Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/ml-client-build.yml/badge.svg)
+![Web App Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/web-app-build.yml/badge.svg)
 
-# Containerized App Exercise
-
-Build a containerized app that uses machine learning. See [instructions](./instructions.md) for details.
-
+# Rock Paper Scissors
 
 ## Table of Contents
-1. [Configure](#configure)
-2. [Virtual Environment](#virtual-environment)
-3. [Secret Configuration Files](#secret-configuration-files)
-4. [Team Members](#team-members)
+1. [Description](#description)
+2. [Set up a virtual environment](#set-up-a-virtual-environment)
+3. [Run the app](#run-the-app)
+4. [Team members](#team-members)
 
-## Configure
-<!-- how to configure and run all parts of your project for any developer on any platform - these instructions must work! -->
-<!-- instructions for setting up, running, and populating mongo db with starter data (if necessary) must be mentioned -->
+## Description
+This app allows users to play standard rock paper scissors against the computer. It uses machine learning to recognize hand gestures from the web camera and compares that against the randomized computer choice to determine the winner. The app leverages Docker and MongoDB, operating in a containerized environment with three sub-systems: a machine-learning client, a web-app interface, and a database.
+See [instructions](./instructions.md) for details.
 
-##  Virtual Environment
-<!-- how to set up any environment variables and import any starter data into the database, as necessary, for the system to operate correctly when run. -->
+## Set up a virtual environment
+Install pipenv using pip:
+```
+pip3 install pipenv
+```
 
-## Secret Configuration Files
-<!-- if there are any `.env` or similar files that aren't included in the version control repository, exact instructions for how to create them and what their contents should be must be supplied to the course admins -->
+Activate it:
+```
+pipenv shell
+```
+
+Create a new virtual environment with the name .venv
+```
+python3 -m venv .venv
+```
+
+Activate the virtual environment:
+```
+source .venv/bin/activate # For Mac
+.venv\Scripts\activate.bat # For Windows
+```
+
+Install dependencies using pip
+```
+pip3 install -r requirements.txt
+```
+
+## Run the app
+Start by building
+```
+docker-compose up --build
+```
+
+Or if you have previously built and haven't made any changes, simply compose the containers
+```
+docker-compose up
+```
+
+Play the game!
+Open the web app following this link [HERE](http://127.0.0.1:5001)
 
 ## Team members
 

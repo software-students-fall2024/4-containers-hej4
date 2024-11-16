@@ -1,12 +1,13 @@
-"""Test Cases for the Rock-Paper-Scissors web app."""
+"""Tests for the web app"""
 
+# pylint: disable=redefined-outer-name
 import sys
 import os
 from unittest.mock import patch, MagicMock
 import pytest
-from app import create_app, random_rps, get_winner
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+from app import create_app, random_rps, get_winner
 
 
 @pytest.fixture
@@ -18,15 +19,18 @@ def client():
         yield client
 
 
-def test_homepage(client):
+def test_homepage(client):  # pylint: disable=redefined-outer-name
     """Test homepage route status and content"""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"<h2>Player: 0</h2>" in response.data
-    assert b"<h2>Computer: 0</h2>" in response.data
+    assert b'<h2>Player: <span id="player-choice">0</span></h2>' in response.data
+    assert (
+        '<h2>Computer: <span id="comp-choice">✊</span></h2>'.encode("utf-8")
+        in response.data
+    )
 
 
-def test_play_game(client):
+def test_play_game(client):  # pylint: disable=redefined-outer-name
     """Test play game route for expected outcomes with valid choice"""
     response = client.post("/play", json={"choice": "rock"})
     assert response.status_code == 200
@@ -72,14 +76,16 @@ def test_upload_image(client):
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
 
         response = client.post("/upload_image", json={"image": "mock_image_data"})
-        assert response.status_code == 302  # Redirect to home
-        mock_insert.assert_called_once_with({"image": "mock_image_data"})
+        assert response.status_code == 302
+        mock_insert.assert_called_once_with(
+            {"image": "mock_image_data", "processed": False}
+        )
 
 
 def test_random_rps():
     """Test random_rps helper function"""
     outcomes = {"rock", "paper", "scissors"}
-    for i in range(10):
+    for _ in range(10):
         choice = random_rps()
         assert choice in outcomes
 
