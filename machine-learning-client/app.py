@@ -3,13 +3,13 @@ Machine learning app module for rock-paper-scissors game
 Inspired by: https://github.com/Assem-ElQersh/Rock-Paper-Scissors-Game
 """
 
-from pymongo import MongoClient
 import time
 import cv2
-from cvzone.HandTrackingModule import HandDetector
-from datetime import datetime
 import base64
 import numpy as np
+from cvzone.HandTrackingModule import HandDetector
+from datetime import datetime
+from pymongo import MongoClient
 
 client = MongoClient("mongodb://mongodb:27017/")
 db = client["rockPaperScissors"]
