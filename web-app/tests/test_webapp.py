@@ -76,7 +76,7 @@ def test_upload_image(client):
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
 
         response = client.post("/upload_image", json={"image": "mock_image_data"})
-        assert response.status_code == 302  # Redirect to home
+        assert response.status_code == 302
         mock_insert.assert_called_once_with(
             {"image": "mock_image_data", "processed": False}
         )

@@ -67,7 +67,7 @@ def main():
                             "choice": player_choice,
                             "hands": hands,
                             "fingers": fingers,
-                            "processed_at": datetime.utcnow(),  # Add timestamp
+                            "processed_at": datetime.utcnow(),
                         }
                     },
                 )

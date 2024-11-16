@@ -12,19 +12,19 @@
             <p>✊✋✌️</p>
         </section>
         <section class="game">
-            <h2>Computer: <span id="comp-choice">✊</span></h2> <!-- Set default emoji here -->
+            <h2>Computer: <span id="comp-choice">✊</span></h2>
             <p>✊✋✌️</p>
         </section>
-        <p id="result"></p> <!-- Display the game result here -->
+        <p id="result"></p>
     </section>
 </section>
 <script>
     const video = document.querySelector("#camera");
     const canvas = document.querySelector("#canvas");
     const btn = document.querySelector("#btn");
-    const compChoiceElement = document.querySelector("#comp-choice"); // Display the computer's emoji choice
-    const playerChoiceElement = document.querySelector("#player-choice"); // Display the player's choice
-    const resultElement = document.querySelector("#result"); // Display the game result
+    const compChoiceElement = document.querySelector("#comp-choice");
+    const playerChoiceElement = document.querySelector("#player-choice");
+    const resultElement = document.querySelector("#result");
 
     async function startCamera() {
         const constraints = {
@@ -50,7 +50,7 @@
 
         const imageData = canvas.toDataURL("image/png");
         postImageData(imageData);
-        pollForResult();  // Start polling for the result
+        pollForResult();
     }
 
     function postImageData(imageData) {
@@ -73,7 +73,7 @@
                     // Update player's choice
                     playerChoiceElement.textContent = data.choice;
                     
-                    // Generate and display the computer's choice
+                    // Get and display the computer's choice
                     const compChoice = ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
                     compChoiceElement.textContent = getEmojiForChoice(compChoice);
                     
@@ -81,13 +81,12 @@
                     const winner = getWinner(data.choice, compChoice);
                     resultElement.textContent = `Result: ${winner}`;
                     
-                    // Stop polling
                     clearInterval(intervalId);
                 }
             } catch (err) {
                 console.error("Error polling for result:", err);
             }
-        }, 1000); // Poll every second
+        }, 1000);
     }
 
     function getEmojiForChoice(choice) {
@@ -115,9 +114,8 @@
 
     window.addEventListener("load", startCamera);
 
-    // Prevent page reload on GO! button click
     btn.addEventListener("click", (e) => {
-        e.preventDefault(); // Prevents any default form submission or page reload
+        e.preventDefault();
         takePicture();
     });
 </script>
