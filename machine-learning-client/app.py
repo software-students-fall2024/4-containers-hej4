@@ -3,13 +3,13 @@ Machine learning app module for rock-paper-scissors game
 Inspired by: https://github.com/Assem-ElQersh/Rock-Paper-Scissors-Game
 """
 
-from pymongo import MongoClient
 import time
-import cv2
-from cvzone.HandTrackingModule import HandDetector
-from datetime import datetime
 import base64
+from datetime import datetime
+import cv2
 import numpy as np
+from cvzone.HandTrackingModule import HandDetector
+from pymongo import MongoClient
 
 client = MongoClient("mongodb://mongodb:27017/")
 db = client["rockPaperScissors"]
@@ -31,7 +31,7 @@ def get_player_rps(image_data):
     """
     image_data = base64.b64decode(image_data.split(",")[1])
     nparr = np.frombuffer(image_data, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # pylint: disable=no-member
 
     hands, img = detector.findHands(img)
     if not hands:
@@ -40,9 +40,9 @@ def get_player_rps(image_data):
     fingers = detector.fingersUp(hands[0])
     if fingers == [0, 0, 0, 0, 0]:
         return "rock", hands, fingers
-    elif fingers == [1, 1, 1, 1, 1]:
+    if fingers == [1, 1, 1, 1, 1]:
         return "paper", hands, fingers
-    elif fingers == [0, 1, 1, 0, 0]:
+    if fingers == [0, 1, 1, 0, 0]:
         return "scissors", hands, fingers
 
     return "invalid choice", hands, fingers

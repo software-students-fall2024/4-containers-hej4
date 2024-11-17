@@ -7,9 +7,10 @@ name = "pypi"
 pylint = "*"
 black = "*"
 pymongo = "*"
-opencv-python = "*"
 cvzone = "*"
 mediapipe = "*"
+opencv-python = "*"
+pytest = "*"
 
 [dev-packages]
 
