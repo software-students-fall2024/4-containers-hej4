@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-from app import fetch_image, get_player_rps
+from app import get_player_rps
 
 VALID_BASE64_IMAGE = (
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/"
@@ -19,7 +19,7 @@ VALID_BASE64_IMAGE = (
 @patch("app.detector.fingersUp", return_value=[0, 0, 0, 0, 0])
 def test_rps_rock(_mock_fingers_up, _mock_find_hands):
     """Test get_player_rps function when gesture is rock."""
-    result, hands, fingers = get_player_rps(VALID_BASE64_IMAGE)
+    result, _, fingers = get_player_rps(VALID_BASE64_IMAGE)
     assert result == "rock"
     assert fingers == [0, 0, 0, 0, 0]
 
@@ -28,7 +28,7 @@ def test_rps_rock(_mock_fingers_up, _mock_find_hands):
 @patch("app.detector.fingersUp", return_value=[0, 1, 1, 0, 0])
 def test_rps_scissors(_mock_fingers_up, _mock_find_hands):
     """Test get_player_rps function when gesture is scissors."""
-    result, hands, fingers = get_player_rps(VALID_BASE64_IMAGE)
+    result, _, fingers = get_player_rps(VALID_BASE64_IMAGE)
     assert result == "scissors"
     assert fingers == [0, 1, 1, 0, 0]
 
