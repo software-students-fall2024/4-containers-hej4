@@ -56,7 +56,7 @@ def create_app(test_config=None):
         """
         images = list(app.db.images.find({}, {"_id": 0, "image": 1}))
         return {"images": images}
-    
+
     @app.route("/get_result", methods=["GET"])
     def get_result():
         image = app.db.images.find_one({"processed": True}, sort=[("processed_at", -1)])
