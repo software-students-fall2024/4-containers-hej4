@@ -101,10 +101,12 @@ def test_get_winner():
     assert get_winner("scissors", "rock") == "comp"
     assert get_winner("rock", "invalid") is None
 
+
 def test_get_winner_invalid_input():
     """Test get_winner with invalid inputs"""
     assert get_winner("invalid", "rock") is None
     assert get_winner("invalid", "invalid") is None
+
 
 def test_get_result(client):
     """Test get_result route"""
@@ -114,7 +116,7 @@ def test_get_result(client):
             "processed": True,
             "choice": "rock",
         }
-        
+
         response = client.get("/get_result")
         assert response.status_code == 200
         data = response.get_json()
