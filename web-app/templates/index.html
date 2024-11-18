@@ -11,6 +11,7 @@
             <button id="btn">GO!</button>
         </section>
         <section class="results">
+            <h3 id="round">Round 1</h3>
             <div class="scores">
                 <div class="score">
                     <p>WINS</p>
@@ -25,7 +26,7 @@
                     <p id="computer-score">0</p>
                 </div>
             </div>
-            <p id="result"></p>
+            <ol id="rounds"></ol>
         </section>
         <section class="game">
             <h2>Computer</h2>
@@ -43,18 +44,18 @@
         computer: 0,
     };
 
+    const video = document.querySelector("#camera");
+    const canvas = document.querySelector("#canvas");
+    const btn = document.querySelector("#btn");
+    const compChoiceElement = document.querySelector("#comp-choice");
+    const roundElement = document.querySelector("#round");
+    const roundsElement = document.querySelector("#rounds");
+    
     function updateScore(type) {
         scores[type]++;
         document.querySelector(`#${type}-score`).textContent = scores[type];
     }
 
-    const video = document.querySelector("#camera");
-    const canvas = document.querySelector("#canvas");
-    const btn = document.querySelector("#btn");
-    const compChoiceElement = document.querySelector("#comp-choice");
-    const playerChoiceElement = document.querySelector("#player-choice");
-    const resultElement = document.querySelector("#result");
-    
     async function startCamera() {
         const constraints = {
             audio: false,
@@ -92,29 +93,38 @@
         });
     }
 
+
+    function addRoundResult(result) {
+        const newResult = document.createElement("li");
+        newResult.textContent = result;
+        roundsElement.appendChild(newResult);
+    }
+
     function pollForResult() {
         const intervalId = setInterval(async () => {
             try {
                 const response = await fetch("http://127.0.0.1:5001/get_result");
                 const data = await response.json();
 
-                if (data.choice !== "pending") {
-                    // Update player's choice
-                    playerChoiceElement.textContent = `: ${data.choice}`;
-                    
+                if (data.choice !== "pending") {                    
                     // Get and display the computer's choice
                     const compChoice = ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
                     compChoiceElement.textContent = getEmojiForChoice(compChoice);
                     
                     // Determine the winner
                     const winner = getWinner(data.choice, compChoice);
-                    resultElement.textContent = `Result: ${winner == "tie" ? "tie" : winner + " wins!"}`;
                     updateScore(winner);
+                    
+                    // Update round number, add round result
+                    round++;
+                    roundElement.textContent = `Round ${round}`;
+                    addRoundResult(`${getEmojiForChoice(data.choice)} vs ${getEmojiForChoice(compChoice)}`)
                     
                     clearInterval(intervalId);
                 }
             } catch (err) {
                 console.error("Error polling for result:", err);
+                clearInterval(intervalId);
             }
         }, 1000);
     }
@@ -128,7 +138,7 @@
             case "scissors":
                 return "✌️";
             default:
-                return "";
+                return "invalid";
         }
     }
 
