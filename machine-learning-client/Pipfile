@@ -6,13 +6,15 @@ name = "pypi"
 [packages]
 pylint = "*"
 black = "*"
-pymongo = "*"
 cvzone = "*"
 mediapipe = "*"
-opencv-python = "*"
 pytest = "*"
+pymongo = "*"
+numpy = "*"
+opencv-python = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.10"
+
