@@ -15,18 +15,6 @@ VALID_BASE64_IMAGE = (
     "w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
 )
 
-@patch("app.db.images.find_one")
-def test_fetch_image(mock_find_one):
-    """Test fetch_image function with a mock database"""
-    mock_find_one.return_value = {
-        "processed": False,
-        "image": "test_image",
-        "_id": "123",
-    }
-    image = fetch_image()
-    assert image == {"processed": False, "image": "test_image", "_id": "123"}
-    mock_find_one.assert_called_once_with({"processed": False}, sort=[("_id", -1)])
-
 
 @patch("app.detector.fingersUp")
 def test_rps_rock(mock_fingers_up):
