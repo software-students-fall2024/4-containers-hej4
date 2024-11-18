@@ -3,9 +3,9 @@
 # pylint: disable=redefined-outer-name
 import sys
 import os
-import unittest
-from unittest.mock import patch, MagicMock
-from app import fetch_image, get_player_rps
+#import unittest
+#from unittest.mock import patch, MagicMock
+#from app import fetch_image, get_player_rps
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 # delete this when tests are added - just using for badge implementation
@@ -19,7 +19,7 @@ def test_placeholder():
 #     "w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
 # )
 
-# @patch("app.db.images.find_one")  
+# @patch("app.db.images.find_one")
 # def test_fetch_image(mock_find_one):
 #     """Test fetch_image function with a mock database"""
 #     mock_find_one.return_value = {
@@ -64,7 +64,6 @@ def test_placeholder():
 # def test_rps_no_hands(mock_fingers_up, mock_find_hands):
 #     """Test get_player_rps function when there are no hands detected."""
 #     result = get_player_rps(VALID_BASE64_IMAGE)
-#    
 
 
 # if __name__ == "__main__":
