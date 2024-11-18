@@ -37,7 +37,7 @@ def test_rps_scissors(_mock_fingers_up, _mock_find_hands):
 @patch("app.detector.fingersUp", return_value=[1, 1, 1, 1, 1])
 def test_rps_paper(_mock_fingers_up, _mock_find_hands):
     """Test get_player_rps function when gesture is paper."""
-    result, hands, fingers = get_player_rps(VALID_BASE64_IMAGE)
+    result, _, fingers = get_player_rps(VALID_BASE64_IMAGE)
     assert result == "paper"
     assert fingers == [1, 1, 1, 1, 1]
 
