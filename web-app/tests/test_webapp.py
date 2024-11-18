@@ -23,11 +23,11 @@ def test_homepage(client):  # pylint: disable=redefined-outer-name
     """Test homepage route status and content"""
     response = client.get("/")
     assert response.status_code == 200
-    assert b'<h2>Player: <span id="player-choice">0</span></h2>' in response.data
-    assert (
-        '<h2>Computer: <span id="comp-choice">✊</span></h2>'.encode("utf-8")
-        in response.data
-    )
+    assert b"<h1>Let's Play Rock Paper Scissors!</h1>" in response.data
+    assert b"<h2>Player</h2>" in response.data
+    assert b"<h2>Computer</h2>" in response.data
+    assert b'<button id="btn">GO!</button>' in response.data
+    assert b'<video id="camera" autoplay playsinline></video>' in response.data
 
 
 def test_play_game(client):  # pylint: disable=redefined-outer-name
