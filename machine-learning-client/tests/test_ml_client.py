@@ -3,15 +3,18 @@
 # pylint: disable=redefined-outer-name
 import sys
 import os
-#import unittest
-#from unittest.mock import patch, MagicMock
-#from app import fetch_image, get_player_rps
+
+# import unittest
+# from unittest.mock import patch, MagicMock
+# from app import fetch_image, get_player_rps
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+
 
 # delete this when tests are added - just using for badge implementation
 def test_placeholder():
     """Placeholder test until actual tests are added"""
     assert True
+
 
 # Valid base64 encoded PNG image for testing
 # VALID_BASE64_IMAGE = (
