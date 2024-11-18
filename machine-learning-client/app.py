@@ -5,6 +5,7 @@ Inspired by: https://github.com/Assem-ElQersh/Rock-Paper-Scissors-Game
 
 import time
 import base64
+import binascii
 from datetime import datetime
 import cv2
 import numpy as np
@@ -29,7 +30,12 @@ def get_player_rps(image_data):
     """
     Analyze image, return player choice
     """
-    image_data = base64.b64decode(image_data.split(",")[1])
+    try:
+        image_data = base64.b64decode(image_data.split(",")[1])
+    except (IndexError, ValueError, binascii.Error):
+        # Handle invalid Base64 strings
+        return "invalid choice", None, None
+
     nparr = np.frombuffer(image_data, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # pylint: disable=no-member
 

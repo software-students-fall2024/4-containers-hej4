@@ -4,11 +4,12 @@
 import sys
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-from app import get_player_rps
+from app import get_player_rps, fetch_image
 
+# valid base64 image string
 VALID_BASE64_IMAGE = (
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/"
     "w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
@@ -49,6 +50,49 @@ def test_rps_no_hands(mock_fingers_up, _mock_find_hands):
     result = get_player_rps(VALID_BASE64_IMAGE)
     assert result[0] == "no hands detected"
     mock_fingers_up.assert_not_called()
+
+
+@patch("app.detector.findHands", return_value=([{"id": 1}], "modified_img"))
+@patch("app.detector.fingersUp", return_value=[1, 0, 1, 0, 1])
+def test_invalid_gesture(_mock_fingers_up, _mock_find_hands):
+    """Test get_player_rps function when gesture is invalid."""
+    result, _, fingers = get_player_rps(VALID_BASE64_IMAGE)
+    assert result == "invalid choice"
+    assert fingers == [1, 0, 1, 0, 1]
+
+
+@patch("app.db")
+def test_fetch_image(mock_db):
+    """Test fetch_image function when there are unprocessed and no unprocessed images."""
+    mock_collection = MagicMock()
+    mock_db.images = mock_collection
+
+    mock_collection.find_one.return_value = {
+        "_id": "123",
+        "image": "sample_base64_image",
+        "processed": False,
+    }
+    result = fetch_image()
+    assert result == {"_id": "123", "image": "sample_base64_image", "processed": False}
+    mock_collection.find_one.assert_called_with(
+        {"processed": False}, sort=[("_id", -1)]
+    )
+
+    mock_collection.find_one.return_value = None
+    result = fetch_image()
+    assert result is None
+    mock_collection.find_one.assert_called_with(
+        {"processed": False}, sort=[("_id", -1)]
+    )
+
+
+def test_corrupted_image_data():
+    """Test get_player_rps function with corrupted base64 image data."""
+    corrupted_image = "data:image/png;base64,INVALID_BASE64_DATA"
+    result, hands, fingers = get_player_rps(corrupted_image)
+    assert result == "invalid choice"
+    assert hands is None
+    assert fingers is None
 
 
 if __name__ == "__main__":
