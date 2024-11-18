@@ -1,6 +1,6 @@
 ![Lint-free](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/lint.yml/badge.svg)
-![ML Client Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/ml-client.yml/badge.svg)
-![Web App Build/Test](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/web-app.yml/badge.svg)
+![ML Client Build/Test](https://github.com/software-students-fall2024/4-containers-hej4/actions/workflows/ml-client.yml/badge.svg)
+![Web App Build/Test](https://github.com/software-students-fall2024/4-containers-hej4/actions/workflows/web-app.yml/badge.svg)
 
 # Rock Paper Scissors
 
@@ -36,9 +36,10 @@ source .venv/bin/activate # For Mac
 .venv\Scripts\activate.bat # For Windows
 ```
 
-Install dependencies using pip
+Install dependencies:
 ```
-pip3 install -r requirements.txt
+pipenv install -r machine-learning-client/requirements.txt
+pipenv install -r web-app/requirements.txt
 ```
 
 ## Run the app
