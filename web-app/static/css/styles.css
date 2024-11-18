@@ -21,7 +21,7 @@ body {
 .game-container {
     display: flex;
     flex-direction: row;
-    gap: 64px;
+    gap: 48px;
 }
 
 .game {
@@ -41,7 +41,9 @@ body {
     width: 400px;
     height: 400px;
     overflow: hidden;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #comp-choice {
@@ -63,4 +65,37 @@ video {
 
 canvas {
     display: none;
+}
+
+#btn {
+    background-color: rgb(22, 43, 134);
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 0px;
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+}
+
+.scores {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.score {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.score p:last-child {
+    font-size: 24px;
+    font-weight: 700;
 }

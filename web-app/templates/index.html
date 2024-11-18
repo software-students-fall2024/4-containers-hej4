@@ -3,29 +3,58 @@
 <section>
     <section class="game-container">
         <section class="game">
-            <h2>Player: <span id="player-choice">0</span></h2>
+            <h2>Player<span id="player-choice"></span></h2>
             <div class="choice">
                 <video id="camera" autoplay playsinline></video>
                 <canvas id="canvas"></canvas>
             </div>
             <button id="btn">GO!</button>
-            <p>✊✋✌️</p>
+        </section>
+        <section class="results">
+            <div class="scores">
+                <div class="score">
+                    <p>WINS</p>
+                    <p id="player-score">0</p>
+                </div>
+                <div class="score">
+                    <p>TIES</p>
+                    <p id="tie-score">0</p>
+                </div>
+                <div class="score">
+                    <p>WINS</p>
+                    <p id="computer-score">0</p>
+                </div>
+            </div>
+            <p id="result"></p>
         </section>
         <section class="game">
-            <h2>Computer: <span id="comp-choice">✊</span></h2>
-            <p>✊✋✌️</p>
+            <h2>Computer</h2>
+            <div class="choice">
+                <span id="comp-choice">❓</span>
+            </div>
         </section>
-        <p id="result"></p>
     </section>
 </section>
 <script>
+    let round = 1;
+    const scores = {
+        player: 0,
+        tie: 0,
+        computer: 0,
+    };
+
+    function updateScore(type) {
+        scores[type]++;
+        document.querySelector(`#${type}-score`).textContent = scores[type];
+    }
+
     const video = document.querySelector("#camera");
     const canvas = document.querySelector("#canvas");
     const btn = document.querySelector("#btn");
     const compChoiceElement = document.querySelector("#comp-choice");
     const playerChoiceElement = document.querySelector("#player-choice");
     const resultElement = document.querySelector("#result");
-
+    
     async function startCamera() {
         const constraints = {
             audio: false,
@@ -71,7 +100,7 @@
 
                 if (data.choice !== "pending") {
                     // Update player's choice
-                    playerChoiceElement.textContent = data.choice;
+                    playerChoiceElement.textContent = `: ${data.choice}`;
                     
                     // Get and display the computer's choice
                     const compChoice = ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
@@ -79,7 +108,8 @@
                     
                     // Determine the winner
                     const winner = getWinner(data.choice, compChoice);
-                    resultElement.textContent = `Result: ${winner}`;
+                    resultElement.textContent = `Result: ${winner == "tie" ? "tie" : winner + " wins!"}`;
+                    updateScore(winner);
                     
                     clearInterval(intervalId);
                 }
@@ -103,13 +133,13 @@
     }
 
     function getWinner(player, comp) {
-        if (player === comp) return "Tie";
+        if (player === comp) return "tie";
         if ((player === "rock" && comp === "scissors") ||
             (player === "paper" && comp === "rock") ||
             (player === "scissors" && comp === "paper")) {
-            return "Player Wins!";
+            return "player";
         }
-        return "Computer Wins!";
+        return "computer";
     }
 
     window.addEventListener("load", startCamera);
