@@ -5,11 +5,12 @@
       <!-- statistics-->
       <section style="margin-bottom: 20px;">
         <p><strong>Total Rounds Played:</strong> {{ stats.total_rounds }}</p>
-        <p><strong>User Wins:</strong> {{ stats.user_wins }} ({{ stats.user_win_percent }}%)</p>
-        <p><strong>Computer Wins:</strong> {{ stats.computer_wins }} ({{ stats.computer_win_percent }}%)</p>
-        <p><strong>Ties:</strong> {{ stats.ties }} ({{ stats.tie_percent }}%)</p>
-        <p><strong>Invalid Rounds:</strong> {{ stats.invalid }} ({{ stats.invalid_percent }}%)</p>
+        <p><strong>Total User Wins:</strong> {{ stats.user_wins }} ({{ stats.user_win_percent }}%)</p>
+        <p><strong>Total Computer Wins:</strong> {{ stats.computer_wins }} ({{ stats.computer_win_percent }}%)</p>
+        <p><strong>Total Ties:</strong> {{ stats.ties }} ({{ stats.tie_percent }}%)</p>
+        <p><strong>Total Invalid Choices:</strong> {{ stats.invalid }} ({{ stats.invalid_percent }}%)</p>
     </section>
+    <!-- table-->
     <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
         <thead>
             <tr>
@@ -30,6 +31,6 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="/" class="button">Back to Game</a>
+    <a href="/" class="button">Go Back to Game</a>
 </section>
 {% endblock %}

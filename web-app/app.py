@@ -93,33 +93,33 @@ def create_app(test_config=None):
             round_data["round_number"] = i + 1
 
         # calculate stats
-        numRounds = len(rounds)
-        userWins = 0
-        computerWins = 0
+        num_rounds = len(rounds)
+        user_wins = 0
+        computer_wins = 0
         ties = 0
         invalid = 0
         for round_data in rounds:
             if round_data["winner"] == "player":
-                userWins += 1
+                user_wins += 1
             elif round_data["winner"] == "computer":
-                computerWins += 1
+                computer_wins += 1
             elif round_data["winner"] == "tie":
                 ties += 1
             if round_data["user_choice"] == "invalid choice":
                 invalid += 1
 
         stats = {
-            "total_rounds": numRounds,
-            "user_wins": userWins,
-            "computer_wins": computerWins,
+            "total_rounds": num_rounds,
+            "user_wins": user_wins,
+            "computer_wins": computer_wins,
             "ties": ties,
             "invalid": invalid,
-            "user_win_percent": (userWins / numRounds * 100) if numRounds else 0,
+            "user_win_percent": (user_wins / num_rounds * 100) if num_rounds else 0,
             "computer_win_percent": (
-                (computerWins / numRounds * 100) if numRounds else 0
+                (computer_wins / num_rounds * 100) if num_rounds else 0
             ),
-            "tie_percent": (ties / numRounds * 100) if numRounds else 0,
-            "invalid_percent": (invalid / numRounds * 100) if numRounds else 0,
+            "tie_percent": (ties / num_rounds * 100) if num_rounds else 0,
+            "invalid_percent": (invalid / num_rounds * 100) if num_rounds else 0,
         }
 
         return render_template("result.html", rounds=rounds, stats=stats)
