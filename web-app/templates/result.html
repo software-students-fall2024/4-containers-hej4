@@ -1,29 +1,35 @@
 {% extends "base.html" %}
-
 {% block container %}
-<section class="game-results">
-    <h2>Game Results</h2>
-    <table>
+<section>
+    <h2>Game History</h2>
+      <!-- statistics-->
+      <section style="margin-bottom: 20px;">
+        <p><strong>Total Rounds Played:</strong> {{ stats.total_rounds }}</p>
+        <p><strong>User Wins:</strong> {{ stats.user_wins }} ({{ stats.user_win_percent }}%)</p>
+        <p><strong>Computer Wins:</strong> {{ stats.computer_wins }} ({{ stats.computer_win_percent }}%)</p>
+        <p><strong>Ties:</strong> {{ stats.ties }} ({{ stats.tie_percent }}%)</p>
+        <p><strong>Invalid Rounds:</strong> {{ stats.invalid }} ({{ stats.invalid_percent }}%)</p>
+    </section>
+    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
         <thead>
             <tr>
-                <th>Picture</th>
-                <th>Result</th>
+                <th>Round</th>
+                <th>User Choice</th>
+                <th>Computer Choice</th>
+                <th>Winner</th>
             </tr>
         </thead>
         <tbody>
+            {% for round in rounds %}
             <tr>
-                <td><img src="{{ url_for('static', filename='images/rock.png') }}" alt="Rock"></td>
-                <td>Rock</td>
+                <td>{{ round.round_number }}</td>
+                <td>{{ round.user_choice }}</td>
+                <td>{{ round.computer_choice }}</td>
+                <td>{{ round.winner }}</td>
             </tr>
-            <tr>
-                <td><img src="{{ url_for('static', filename='images/paper.png') }}" alt="Paper"></td>
-                <td>Paper</td>
-            </tr>
-            <tr>
-                <td><img src="{{ url_for('static', filename='images/scissors.png') }}" alt="Scissors"></td>
-                <td>Scissors</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <a href="/" class="button">Back to Game</a>
 </section>
 {% endblock %}

@@ -36,6 +36,11 @@
         </section>
     </section>
 </section>
+</section>
+    <a href="/display-rounds" id="rounds-data" class="button">
+        View history results
+    </a>
+</section>
 <script>
     let round = 1;
     const scores = {
@@ -119,7 +124,19 @@
                     round++;
                     roundElement.textContent = `Round ${round}`;
                     addRoundResult(`${getEmojiForChoice(data.choice)} vs ${getEmojiForChoice(compChoice)}`)
-                    
+                     // Call store-result to save the round details 
+                    await fetch("http://127.0.0.1:5001/store-result", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            round_number: round,
+                            user_choice: data.choice,
+                            computer_choice: compChoice,
+                            winner: winner,
+                        }),
+                    });
                     clearInterval(intervalId);
                 }
             } catch (err) {
