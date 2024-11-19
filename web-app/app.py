@@ -67,14 +67,62 @@ def create_app(test_config=None):
     @app.route("/store-result", methods=["POST"])
     def store_result():
         data = request.json
-        choice = data.get("choice")
-        result = data.get("result")
+        user_choice = data.get("user_choice")
+        computer_choice = data.get("computer_choice")
+        winner = data.get("winner")
 
         # Insert into MongoDB collection
-        if choice and result:
-            app.db.collection.insert_one({"choice": choice, "result": result})
+        if all([user_choice, computer_choice, winner]):
+            app.db.collection.insert_one(
+                {
+                    "user_choice": user_choice,
+                    "computer_choice": computer_choice,
+                    "winner": winner,
+                }
+            )
             return jsonify({"status": "success"}), 200
         return jsonify({"error": "Invalid data"}), 400
+
+    @app.route("/display-rounds", methods=["GET"])
+    def display_rounds():
+        """
+        Retrieve and display all historic rounds
+        """
+        rounds = list(app.db.collection.find({}, {"_id": 0}))
+        for i, round_data in enumerate(rounds):
+            round_data["round_number"] = i + 1
+
+        # calculate stats
+        num_rounds = len(rounds)
+        user_wins = 0
+        computer_wins = 0
+        ties = 0
+        invalid = 0
+        for round_data in rounds:
+            if round_data["winner"] == "player":
+                user_wins += 1
+            elif round_data["winner"] == "computer":
+                computer_wins += 1
+            elif round_data["winner"] == "tie":
+                ties += 1
+            if round_data["user_choice"] == "invalid choice":
+                invalid += 1
+
+        stats = {
+            "total_rounds": num_rounds,
+            "user_wins": user_wins,
+            "computer_wins": computer_wins,
+            "ties": ties,
+            "invalid": invalid,
+            "user_win_percent": (user_wins / num_rounds * 100) if num_rounds else 0,
+            "computer_win_percent": (
+                (computer_wins / num_rounds * 100) if num_rounds else 0
+            ),
+            "tie_percent": (ties / num_rounds * 100) if num_rounds else 0,
+            "invalid_percent": (invalid / num_rounds * 100) if num_rounds else 0,
+        }
+
+        return render_template("result.html", rounds=rounds, stats=stats)
 
     return app
 

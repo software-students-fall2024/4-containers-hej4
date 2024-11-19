@@ -82,6 +82,27 @@ canvas {
     align-items: center;
 }
 
+
+.button {
+    background-color: rgb(22, 43, 134);
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 12px 24px;
+    text-decoration: none;
+    display: inline-block;
+    border: 0px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#rounds-data {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
 .scores {
     display: flex;
     flex-direction: row;
