@@ -102,13 +102,13 @@ def test_empty_image_data(_mock_find_hands):
     assert hands is None
     assert fingers is None
 
-@patch("app.detector.findHands", side_effect=Exception("Detector error"))
+@patch("app.detector.findHands", side_effect=RuntimeError("Detector error"))
 @patch("app.detector.fingersUp")
 def test_hand_detection_exception(mock_fingers_up, _mock_find_hands):
     """Test get_player_rps function when findHands raises an exception."""
     try:
         result, hands, fingers = get_player_rps(VALID_BASE64_IMAGE)
-    except Exception as e:
+    except RuntimeError:
         result = "invalid choice"
         hands = None
         fingers = None
@@ -117,7 +117,6 @@ def test_hand_detection_exception(mock_fingers_up, _mock_find_hands):
     assert hands is None
     assert fingers is None
     mock_fingers_up.assert_not_called()
-
 
 @patch("app.detector.findHands", return_value=([{"id": 1}], "modified_img"))
 @patch("app.detector.fingersUp", return_value=[0, 1, 0, 1, 0])
