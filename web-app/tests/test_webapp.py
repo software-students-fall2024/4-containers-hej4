@@ -47,10 +47,18 @@ def test_store_game_result(client):
         mock_insert.return_value = MagicMock(inserted_id="fake_id")
 
         response = client.post(
-            "/store-result", json={"choice": "rock", "result": "win"}
+            "/store-result",
+            json={
+                "user_choice": "rock",
+                "computer_choice": "scissors",
+                "winner": "player",
+            },
         )
         assert response.status_code == 200
-        mock_insert.assert_called_once_with({"choice": "rock", "result": "win"})
+
+        mock_insert.assert_called_once_with(
+            {"user_choice": "rock", "computer_choice": "scissors", "winner": "player"}
+        )
 
 
 def test_play_route_invalid_method(client):
