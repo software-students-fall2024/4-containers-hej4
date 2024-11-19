@@ -94,6 +94,7 @@ def test_corrupted_image_data():
     assert hands is None
     assert fingers is None
 
+
 @patch("app.detector.findHands", return_value=(None, None))
 def test_empty_image_data(_mock_find_hands):
     """Test get_player_rps function with an empty base64 image string."""
@@ -101,6 +102,7 @@ def test_empty_image_data(_mock_find_hands):
     assert result == "invalid choice"
     assert hands is None
     assert fingers is None
+
 
 @patch("app.detector.findHands", side_effect=RuntimeError("Detector error"))
 @patch("app.detector.fingersUp")
@@ -118,6 +120,7 @@ def test_hand_detection_exception(mock_fingers_up, _mock_find_hands):
     assert fingers is None
     mock_fingers_up.assert_not_called()
 
+
 @patch("app.detector.findHands", return_value=([{"id": 1}], "modified_img"))
 @patch("app.detector.fingersUp", return_value=[0, 1, 0, 1, 0])
 def test_ambiguous_hand_gesture(_mock_fingers_up, _mock_find_hands):
@@ -133,16 +136,24 @@ def test_no_unprocessed_images(mock_db):
     mock_db.images.find_one.return_value = None
     result = fetch_image()
     assert result is None
-    mock_db.images.find_one.assert_called_once_with({"processed": False}, sort=[("_id", -1)])
+    mock_db.images.find_one.assert_called_once_with(
+        {"processed": False}, sort=[("_id", -1)]
+    )
 
 
 @patch("app.db")
 def test_unexpected_image_format(mock_db):
     """Test fetch_image function with invalid image format."""
-    mock_db.images.find_one.return_value = {"_id": "123", "image": None, "processed": False}
+    mock_db.images.find_one.return_value = {
+        "_id": "123",
+        "image": None,
+        "processed": False,
+    }
     result = fetch_image()
     assert result == {"_id": "123", "image": None, "processed": False}
-    mock_db.images.find_one.assert_called_once_with({"processed": False}, sort=[("_id", -1)])
+    mock_db.images.find_one.assert_called_once_with(
+        {"processed": False}, sort=[("_id", -1)]
+    )
 
 
 @patch("app.detector.findHands", return_value=([{"id": 1}], "modified_img"))
@@ -157,12 +168,13 @@ def test_multiple_invalid_gestures(_mock_fingers_up, _mock_find_hands):
 
 @patch("app.detector.findHands", return_value=(None, None))
 def test_no_hands_and_corrupted_data(_mock_find_hands):
-    """test get_player_rps function when no hands are detected and the image data is corrupted."""
+    """Test get_player_rps function when no hands are detected and the image data is corrupted."""
     corrupted_image = "data:image/png;base64,INVALID_DATA"
     result, hands, fingers = get_player_rps(corrupted_image)
     assert result == "invalid choice"
     assert hands is None
     assert fingers is None
+
 
 if __name__ == "__main__":
     unittest.main()
