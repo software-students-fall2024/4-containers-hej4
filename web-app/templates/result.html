@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block container %}
-<section>
-    <h2>Game History</h2>
+    <section style="padding: 20px; max-width: 800px; margin: auto; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <h2 style="text-align: center; color: #333; font-family: 'Arial', sans-serif;">Game History</h2>
       <!-- statistics-->
-      <section style="margin-bottom: 20px;">
+      <section style="margin-bottom: 20px; background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
         <p><strong>Total Rounds Played:</strong> {{ stats.total_rounds }}</p>
         <p><strong>Total User Wins:</strong> {{ stats.user_wins }} ({{ stats.user_win_percent }}%)</p>
         <p><strong>Total Computer Wins:</strong> {{ stats.computer_wins }} ({{ stats.computer_win_percent }}%)</p>
@@ -11,26 +11,29 @@
         <p><strong>Total Invalid Choices:</strong> {{ stats.invalid }} ({{ stats.invalid_percent }}%)</p>
     </section>
     <!-- table-->
-    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
-        <thead>
-            <tr>
-                <th>Round</th>
-                <th>User Choice</th>
-                <th>Computer Choice</th>
-                <th>Winner</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for round in rounds %}
-            <tr>
-                <td>{{ round.round_number }}</td>
-                <td>{{ round.user_choice }}</td>
-                <td>{{ round.computer_choice }}</td>
-                <td>{{ round.winner }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div style="max-height: 300px; overflow-y: auto; border-radius: 8px; border: 1px solid #ddd;">
+        <table style="width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; table-layout: fixed;">
+            <thead style="position: sticky; top: 0; background-color: #007BFF; color: white; z-index: 1;">
+                <tr style="background-color: #007BFF; color: #fff;">
+                    <th style="padding: 15px; position: sticky; top: 0; background-color: #007BFF; z-index: 1;">Round</th>
+                    <th style="padding: 15px; position: sticky; top: 0; background-color: #007BFF; z-index: 1;">User Choice</th>
+                    <th style="padding: 15px; position: sticky; top: 0; background-color: #007BFF; z-index: 1;">Computer Choice</th>
+                    <th style="padding: 15px; position: sticky; top: 0; background-color: #007BFF; z-index: 1;">Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for round in rounds %}
+                <div style="text-align: center; margin-top: 20px;">
+                    <td>{{ round.round_number }}</td>
+                    <td>{{ round.user_choice }}</td>
+                    <td>{{ round.computer_choice }}</td>
+                    <td>{{ round.winner }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br><br>
     <a href="/" class="button">Go Back to Game</a>
 </section>
 {% endblock %}
