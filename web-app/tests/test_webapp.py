@@ -129,3 +129,69 @@ def test_get_result(client):
         assert response.status_code == 200
         data = response.get_json()
         assert data["choice"] == "rock"
+
+
+def test_play_route_invalid_choice(client):
+    """Test play route with invalid choice"""
+    response = client.post("/play", json={"choice": "invalid_choice"})
+    assert response.status_code == 200
+
+    data = response.get_json()
+    assert data["result"] in ["win", "lose", "draw"]
+
+
+def test_display_rounds_empty(client):
+    """Test display rounds when there are no rounds played yet"""
+    with patch.object(client.application, "db") as mock_db:
+        mock_collection = mock_db.collection
+        mock_collection.find.return_value = []
+
+        response = client.get("/display-rounds")
+        assert response.status_code == 200
+        assert b"No rounds played yet" in response.data
+
+
+def test_get_result_no_image(client):
+    """Test get_result route when there are no processed images"""
+    with patch.object(client.application, "db") as mock_db:
+        mock_images_collection = mock_db.images
+        mock_images_collection.find_one.return_value = None
+
+        response = client.get("/get_result")
+        assert response.status_code == 200
+
+        data = response.get_json()
+        assert data["choice"] == "pending"
+
+
+def test_view_images_empty(client):
+    """Test viewing images when there are no images"""
+    with patch.object(client.application, "db") as mock_db:
+        mock_images_collection = mock_db.images
+        mock_images_collection.find.return_value = []
+
+        response = client.get("/view_images")
+        assert response.status_code == 200
+
+        data = response.get_json()
+        assert "images" in data
+        assert data["images"] == []
+
+
+def test_display_rounds_mixed_data(client):
+    """Test display rounds when there is a mix of valid and invalid rounds"""
+    with patch.object(client.application, "db") as mock_db:
+        mock_collection = mock_db.collection
+        mock_collection.find.return_value = [
+            {"user_choice": "rock", "computer_choice": "scissors", "winner": "player"},
+            {
+                "user_choice": "invalid choice",
+                "computer_choice": "rock",
+                "winner": "tie",
+            },
+        ]
+        response = client.get("/display-rounds")
+        assert response.status_code == 200
+        assert b"rock" in response.data
+        assert b"scissors" in response.data
+        assert b"tie" in response.data

@@ -92,6 +92,24 @@ def create_app(test_config=None):
         for i, round_data in enumerate(rounds):
             round_data["round_number"] = i + 1
 
+        if not rounds:
+            return render_template(
+                "result.html",
+                rounds=[],
+                stats={
+                    "total_rounds": 0,
+                    "user_wins": 0,
+                    "computer_wins": 0,
+                    "ties": 0,
+                    "invalid": 0,
+                    "user_win_percent": 0,
+                    "computer_win_percent": 0,
+                    "tie_percent": 0,
+                    "invalid_percent": 0,
+                },
+                message="No rounds played yet",
+            )
+
         # calculate stats
         num_rounds = len(rounds)
         user_wins = 0
