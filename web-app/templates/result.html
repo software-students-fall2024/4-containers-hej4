@@ -2,7 +2,8 @@
 {% block container %}
     <section style="padding: 20px; max-width: 800px; margin: auto; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
     <h2 style="text-align: center; color: #333; font-family: 'Arial', sans-serif;">Game History</h2>
-      <!-- statistics-->
+    {% if rounds %}
+    <!-- statistics-->
       <section style="margin-bottom: 20px; background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
         <p><strong>Total Rounds Played:</strong> {{ stats.total_rounds }}</p>
         <p><strong>Total User Wins:</strong> {{ stats.user_wins }} ({{ stats.user_win_percent }}%)</p>
@@ -33,6 +34,12 @@
             </tbody>
         </table>
     </div>
+    {% else %}
+    <p style="text-align: center; font-size: 18px; color: #555; font-family: 'Arial', sans-serif; margin-top: 20px;">
+        No rounds played yet.
+    </p>
+    {% endif %}
+
     <br><br>
     <a href="/" class="button">Go Back to Game</a>
 </section>
