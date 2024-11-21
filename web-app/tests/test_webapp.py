@@ -61,13 +61,13 @@ def test_store_game_result(client):
         )
 
 
-def test_play_route_invalidMethod(client):
+def test_play_route_invalid_method(client):
     """/play should only accept POST requests, not GET"""
     response = client.get("/play")
     assert response.status_code == 405
 
 
-def test_store_result_invalidData(client):
+def test_store_result_invalid_data(client):
     """Test store result route with invalid data"""
     response = client.post("/store-result", json={})
     assert response.status_code == 400
@@ -110,7 +110,7 @@ def test_get_winner():
     assert get_winner("rock", "invalid") is None
 
 
-def test_get_winner_invalidInput():
+def test_get_winner_invalid_input():
     """Test get_winner with invalid inputs"""
     assert get_winner("invalid", "rock") is None
     assert get_winner("invalid", "invalid") is None
@@ -131,7 +131,7 @@ def test_get_result(client):
         assert data["choice"] == "rock"
 
 
-def test_play_route_invalidChoice(client):
+def test_play_route_invalid_choice(client):
     """Test play route with invalid choice"""
     response = client.post("/play", json={"choice": "invalid_choice"})
     assert response.status_code == 200
@@ -151,7 +151,7 @@ def test_display_rounds_empty(client):
         assert b"No rounds played yet" in response.data
 
 
-def test_get_result_noImage(client):
+def test_get_result_no_image(client):
     """Test get_result route when there are no processed images"""
     with patch.object(client.application, "db") as mock_db:
         mock_images_collection = mock_db.images
@@ -178,7 +178,7 @@ def test_view_images_empty(client):
         assert data["images"] == []
 
 
-def test_display_rounds_mixedData(client):
+def test_display_rounds_mixed_data(client):
     """Test display rounds when there is a mix of valid and invalid rounds"""
     with patch.object(client.application, "db") as mock_db:
         mock_collection = mock_db.collection
